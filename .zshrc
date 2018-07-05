@@ -4,10 +4,12 @@
 # Path to your oh-my-zsh installation.
 export ZSH=/home/bkolev/.oh-my-zsh
 
+export LC_ALL=en_US.UTF-8
+
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME="bira"
+ZSH_THEME="evan"
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -51,7 +53,7 @@ ZSH_THEME="bira"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
+plugins=(git zsh-syntax-highlighting-filetypes)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -94,11 +96,24 @@ setopt nosharehistory
 export GOPATH=$HOME/go
 export PATH=$HOME/bin:$GOPATH/bin:$PATH
 
+#expand-or-complete-or-list-files
+function expand-or-complete-or-list-files() {
+    if [[ $#BUFFER == 0 ]]; then
+        BUFFER="ls "
+        CURSOR=3
+        zle list-choices
+        zle backward-kill-word
+    else
+        zle expand-or-complete
+    fi
+}
+
+if [ -f ~/.config/exercism/exercism_completion.zsh ]; then
+  . ~/.config/exercism/exercism_completion.zsh
+fi
+
 #if [ $commands[kubectl] ]; then
 #  source <(kubectl completion zsh)
 #10g1i
 
-#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
-export SDKMAN_DIR="/home/bkolev/.sdkman"
-[[ -s "/home/bkolev/.sdkman/bin/sdkman-init.sh" ]] && source "/home/bkolev/.sdkman/bin/sdkman-init.sh"
-
+eval $(dircolors -b $HOME/.dircolors)
